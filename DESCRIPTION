@@ -1,0 +1,22 @@
+Package: datatableEZ
+Type: Package
+Title: Easy-to-use datatable
+Version: 0.0.1
+Author: Vadim Bondarenko
+Maintainer: Vadim Bondarenko <vadimus202@gmail.com>
+Description: This is a wrapper around \code{DT::datatable()} with more convenient
+    defaults. Also, most common elements of \code{options()} argument are moved
+    to direct arguments list for this function. This removes to necessity to pass
+    on long options list (which is not well documented in the DT package
+    documentation). It also makes them avalable for auto-complete in RStudio.
+License: GPL-3 | file LICENSE
+Encoding: UTF-8
+LazyData: true
+Depends: R (>= 3.3.2)
+Imports: DT (>= 0.2),
+    RColorBrewer,
+    magrittr
+RoxygenNote: 6.0.1
+Suggests: knitr,
+    rmarkdown
+VignetteBuilder: knitr
