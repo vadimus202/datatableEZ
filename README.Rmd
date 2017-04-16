@@ -12,6 +12,10 @@ knitr::opts_chunk$set(
 )
 ```
 
+[![Travis-CI Build Status](https://travis-ci.org/vadimus202/datatableEZ.svg?branch=master)](https://travis-ci.org/vadimus202/datatableEZ)
+[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/vadimus202/datatableEZ?branch=master&svg=true)](https://ci.appveyor.com/project/vadimus202/datatableEZ)
+
+
 ## A Friendly Datatable
 
 `datatable_EZ()` is a wrapper around `DT::datatable()` with more convenient defaults. Also, most common elements of the `options()` argument are moved to direct arguments list for this function. This removes to necessity to pass on long options list (which is not well documented in the `DT` package documentation). It also makes these options available for auto-complete drop-downs in RStudio.

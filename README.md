@@ -1,5 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+[![Travis-CI Build Status](https://travis-ci.org/vadimus202/datatableEZ.svg?branch=master)](https://travis-ci.org/vadimus202/datatableEZ) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/vadimus202/datatableEZ?branch=master&svg=true)](https://ci.appveyor.com/project/vadimus202/datatableEZ)
+
 A Friendly Datatable
 --------------------
 
