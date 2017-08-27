@@ -1,6 +1,6 @@
 Package: datatableEZ
 Type: Package
-Title: A convinient wrapper for DT package
+Title: A Convenient Wrapper for DT Package
 Version: 0.1.0
 Author: Vadim Bondarenko
 Maintainer: Vadim Bondarenko <vadimus202@gmail.com>
