@@ -1,14 +1,19 @@
 Package: datatableEZ
 Type: Package
-Title: Easy-to-use datatable
+Title: A convinient wrapper for DT package
 Version: 0.0.1
 Author: Vadim Bondarenko
 Maintainer: Vadim Bondarenko <vadimus202@gmail.com>
-Description: This is a wrapper around \code{DT::datatable()} with more convenient
-    defaults. Also, most common elements of \code{options()} argument are moved
-    to direct arguments list for this function. This removes to necessity to pass
-    on long options list (which is not well documented in the DT package
-    documentation). It also makes them avalable for auto-complete in RStudio.
+URL: https://github.com/vadimus202/datatableEZ
+BugReports: https://github.com/vadimus202/datatableEZ/issues
+Description: The DT package is a wrapper of the JavaScript library 'DataTables', 
+    and is a powerful way of rendering HTML tables from R dataframes using 
+    JavaScript, usually via Markdown or Shiny. This package is mostly a wrapper 
+    around DT::datatable() with more convenient defaults and simplified syntax.     
+    The most common elements of the options() list argument are moved
+    to direct arguments list datatable_EZ function. This avoids the need to
+    include a long list of options (which is not fully documented in the 
+    DT package documentation). See the vignette for most common usage examples.
 License: GPL-3 | file LICENSE
 Encoding: UTF-8
 LazyData: true
@@ -18,5 +23,6 @@ Imports: DT (>= 0.2),
     magrittr
 RoxygenNote: 6.0.1
 Suggests: knitr,
-    rmarkdown
+    rmarkdown,
+    testthat
 VignetteBuilder: knitr

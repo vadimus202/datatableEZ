@@ -70,9 +70,9 @@ details.}
 \description{
 This is a wrapper around \code{DT::datatable()} with more convenient
 defaults. Also, most common elements of \code{options()} argument are moved
-to direct arguments list for this function. This removes to necessity to pass
-on long options list (which is not well documented in the DT package
-documentation). It also makes them avalable for auto-complete in RStudio.
+to direct arguments list for this function. This removes the necessity to pass
+on a long options list (which is not fully documented in the DT package
+documentation). It also exposes them auto-complete drop-downs in RStudio IDE.
 }
 \examples{
 library(DT)

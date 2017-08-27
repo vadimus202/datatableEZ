@@ -13,11 +13,15 @@ format_databars(table, columns, color = "Pastel1", min_quantile = 0.1)
 \item{columns}{columns to be formatted (can be character or a formula of the
 form \code{~ V1 + V2}, which is equivalent to \code{c('V1', 'V2')})}
 
-\item{color}{a character vector of color names (will be recycled).
-Alternatively, a character name of one of the
-\code{RColorBrewer::brewer.pal()} qualitative palettes ('Accent', 'Dark2',
-'Paired', 'Pastel1', 'Pastel2', 'Set1', 'Set2', 'Set3'), or a numeric index
-1-8 of those names. The default is "Pastel1".}
+\item{color}{Background colors for each column (recycled if needed). One of:
+\itemize{
+  \item One of \code{RColorBrewer::brewer.pal()} qualitative palettes
+    ('Accent', 'Dark2','Paired', 'Pastel1', 'Pastel2', 'Set1', 'Set2', 'Set3'),
+    or a numeric index 1-8 of those names. The default is "Pastel1"
+  \item valid R color name(s) - like \code{"red3"}
+  \item RGB value(s) - like \code{"rgb(255, 0, 0)"}
+  \item HEX value(s) - like \code{"#ff0000"}
+}}
 
 \item{min_quantile}{Controls the minimum length of the databar. The row with
 the maximum value in a column will always have a full bar. The row with the
@@ -28,16 +32,22 @@ Default is 0.10.}
 Formatted \code{DT::datatable} object
 }
 \description{
-Applies conditional formating databars to one or more columns in a
+Applies conditional formatting databars to one or more columns in a
 \code{DT::datatable()}.
 }
 \examples{
-library(DT)
-library(magrittr)
+dt <- iris \%>\% datatable_EZ()
 
-iris \%>\%
-  datatable_EZ() \%>\%
-  format_databars(~ Sepal.Length + Petal.Length) # same as c("Sepal.Length","Petal.Length")
+# multiple columns specification
+# same as c("Sepal.Length","Petal.Length")
+dt \%>\% format_databars(~ Sepal.Length + Petal.Length)
+
+# Specify R color names
+dt \%>\% format_databars(~ Sepal.Length, color=c("red3","grey75"))
+
+# Specify RColorBrewer qualitative palettes
+dt \%>\% format_databars(~ Sepal.Length, color= "Pastel1") # by name
+dt \%>\% format_databars(~ Sepal.Length, color= 2) # by index
 
 }
 \seealso{

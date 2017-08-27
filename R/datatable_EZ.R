@@ -2,9 +2,9 @@
 #'
 #' This is a wrapper around \code{DT::datatable()} with more convenient
 #' defaults. Also, most common elements of \code{options()} argument are moved
-#' to direct arguments list for this function. This removes to necessity to pass
-#' on long options list (which is not well documented in the DT package
-#' documentation). It also makes them avalable for auto-complete in RStudio.
+#' to direct arguments list for this function. This removes the necessity to pass
+#' on a long options list (which is not fully documented in the DT package
+#' documentation). It also exposes them auto-complete drop-downs in RStudio IDE.
 #'
 #' @param data a data object (either a matrix or a data frame)
 #' @param caption the table caption; a character vector or a tag object
@@ -109,18 +109,22 @@ datatable_EZ <-
 
 #' Add Databars to the Datatable
 #'
-#' Applies conditional formating databars to one or more columns in a
+#' Applies conditional formatting databars to one or more columns in a
 #' \code{DT::datatable()}.
 #'
 #' @param table an object from \code{DT::datatable} or
 #'   \code{finTrendr::datatable_EZ} output
 #' @param columns columns to be formatted (can be character or a formula of the
 #'   form \code{~ V1 + V2}, which is equivalent to \code{c('V1', 'V2')})
-#' @param color a character vector of color names (will be recycled).
-#'   Alternatively, a character name of one of the
-#'   \code{RColorBrewer::brewer.pal()} qualitative palettes ('Accent', 'Dark2',
-#'   'Paired', 'Pastel1', 'Pastel2', 'Set1', 'Set2', 'Set3'), or a numeric index
-#'   1-8 of those names. The default is "Pastel1".
+#' @param color Background colors for each column (recycled if needed). One of:
+#'   \itemize{
+#'     \item One of \code{RColorBrewer::brewer.pal()} qualitative palettes
+#'       ('Accent', 'Dark2','Paired', 'Pastel1', 'Pastel2', 'Set1', 'Set2', 'Set3'),
+#'       or a numeric index 1-8 of those names. The default is "Pastel1"
+#'     \item valid R color name(s) - like \code{"red3"}
+#'     \item RGB value(s) - like \code{"rgb(255, 0, 0)"}
+#'     \item HEX value(s) - like \code{"#ff0000"}
+#'   }
 #' @param min_quantile Controls the minimum length of the databar. The row with
 #'   the maximum value in a column will always have a full bar. The row with the
 #'   minimum value will have a zero-length bar, if \code{min_quantile=0}.
@@ -136,12 +140,18 @@ datatable_EZ <-
 #'   \code{\link[DT]{formatStyle}}, \code{\link[DT]{styleColorBar}}
 #'
 #' @examples
-#' library(DT)
-#' library(magrittr)
+#' dt <- iris %>% datatable_EZ()
 #'
-#' iris %>%
-#'   datatable_EZ() %>%
-#'   format_databars(~ Sepal.Length + Petal.Length) # same as c("Sepal.Length","Petal.Length")
+#' # multiple columns specification
+#' # same as c("Sepal.Length","Petal.Length")
+#' dt %>% format_databars(~ Sepal.Length + Petal.Length)
+#'
+#' # Specify R color names
+#' dt %>% format_databars(~ Sepal.Length, color=c("red3","grey75"))
+#'
+#' # Specify RColorBrewer qualitative palettes
+#' dt %>% format_databars(~ Sepal.Length, color= "Pastel1") # by name
+#' dt %>% format_databars(~ Sepal.Length, color= 2) # by index
 #'
 format_databars <-
     function(
@@ -157,10 +167,15 @@ format_databars <-
         # extract data from table
         df <- table$x$data[,columns, drop=FALSE]
 
-        # define colorrs
-        color <- get_brew(color)
+        # define colors
+        if(is_brew(color)){
+            color <- get_brew(color)
+        } else if(are_colors(color)) {
+            color <- col2css(color)
+        } else {
+            stop("Invalid colors: ", paste(color, collapse = " "))
+        }
         colors <- rep_len(color, length(columns))
-        if(!are_colors(colors)) stop(paste("Invalid colors:", color))
 
         # loop through each column
         for(i in seq_along(columns)){
@@ -192,16 +207,31 @@ are_colors <- function(colors) {
     all(vec)
 }
 
+
+brew_colors <- c('Accent', 'Dark2', 'Paired', 'Pastel1', 'Pastel2', 'Set1', 'Set2', 'Set3')
+
+is_brew <-
+    function(color) length(color)==1 && (color %in% brew_colors || color %in% seq_along(brew_colors))
+
 get_brew <-
     function(color){
-        brew_colors <- c('Accent', 'Dark2', 'Paired', 'Pastel1', 'Pastel2', 'Set1', 'Set2', 'Set3')
 
-        if(length(color)==1){
-            if(color %in% brew_colors) pal <- RColorBrewer::brewer.pal(8,color)
-            if(color %in% seq_along(brew_colors)) pal <- RColorBrewer::brewer.pal(8, brew_colors[color])
+        if(color %in% brew_colors){
+            # match by name
+            pal <- RColorBrewer::brewer.pal(8,color)
+        } else if (color %in% seq_along(brew_colors)){
+            # match by position
+            pal <- RColorBrewer::brewer.pal(8, brew_colors[color])
         }
-
         return(pal)
+    }
+
+col2css <-
+    function(color){
+        css <- as.data.frame(col2rgb(color))
+        css <- sapply(css, paste, collapse=",")
+        css <- paste0("rgb(",css,")")
+        return(css)
     }
 
 get_range <-
@@ -209,5 +239,3 @@ get_range <-
         c(2*min(x, na.rm = T) - stats::quantile(x, min_quantile, na.rm = T),
           max(x, na.rm = T))
     }
-
-
