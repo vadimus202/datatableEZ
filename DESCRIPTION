@@ -20,7 +20,8 @@ LazyData: true
 Depends: R (>= 3.3.2)
 Imports: DT (>= 0.2),
     RColorBrewer,
-    magrittr
+    magrittr,
+    purrr
 RoxygenNote: 6.0.1
 Suggests: knitr,
     rmarkdown,

@@ -5,9 +5,25 @@
 A Friendly Datatable
 --------------------
 
-`datatable_EZ()` is a wrapper around `DT::datatable()` with more convenient defaults. Also, most common elements of the `options()` argument are moved to direct arguments list for this function. This removes to necessity to pass on long options list (which is not well documented in the `DT` package documentation). It also makes these options available for auto-complete drop-downs in RStudio.
+The `DT` package is a wrapper of the JavaScript library 'DataTables', and is a powerful way of rendering HTML tables from R dataframes using JavaScript, usually via Markdown or Shiny. This package is mostly a wrapper around `DT::datatable()` with more convenient defaults and simplified syntax.
+
+The most common elements of the options() list argument are moved to direct arguments of the `datatable_EZ()` function. This avoids the need to include a long list of options and provides additional documentation and examples of their usage.
 
 Read the **Interactive Data Tables** vignette for some examples.
+
+Installation
+------------
+
+To install the development version:
+
+``` r
+devtools::install_github(repo = "datatableEZ", 
+                         username = "vadimus202", 
+                         build_vignettes = TRUE)
+```
+
+Common Usage
+------------
 
 ``` r
 library(datatableEZ)
@@ -41,6 +57,15 @@ datatable_EZ(
     dom="t",
     columnDefs = list(list(width = '50px', targets = c(1, 3))),
     order = list(list(0, 'desc'), list(1, 'asc'))
+)
+```
+
+### Specify Column Widths in Pixels
+
+``` r
+datatable_EZ(
+    iris,
+    col_widths = c(50, 50, 300, 50, 300)
 )
 ```
 

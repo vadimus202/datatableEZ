@@ -7,8 +7,8 @@
 datatable_EZ(data, colnames, filter = "none", caption = NULL,
   rownames = FALSE, class = "compact display", pageLength = 10,
   lengthMenu = c(5, 10, 25, 50, 100, 500), searchHighlight = TRUE,
-  dom = "lftip", columnDefs = list(), ordering = TRUE, order = list(),
-  options = list(), ...)
+  dom = "lftip", columnDefs = list(), col_widths = NULL,
+  ordering = TRUE, order = list(), options = list(), ...)
 }
 \arguments{
 \item{data}{a data object (either a matrix or a data frame)}
@@ -56,6 +56,10 @@ details.}
 
 \item{columnDefs}{list of column definitions; see Examples.}
 
+\item{col_widths}{An numeric vector of column widths, in pixels. Must equal
+the number of columns in the data. Ignored if \code{columnDefs} is
+specified.}
+
 \item{ordering}{logical; should the table be sortable?}
 
 \item{order}{list of row sorting options; see examples.}
@@ -82,6 +86,7 @@ datatable(iris)
 # no rownumbers by default
 datatable_EZ(iris)
 
+# individual option arguments
 datatable_EZ(
     iris,
     # DOM elements (table only)
@@ -90,6 +95,12 @@ datatable_EZ(
     columnDefs = list(list(width = '50px', targets = c(1, 3))),
     # Row Sorting
     order = list(list(0, 'desc'), list(1, 'asc'))
+)
+
+# specify column widths in pixels
+datatable_EZ(
+    iris,
+    col_widths = c(50, 50, 300, 50, 300)
 )
 
 # disable sorting and searching by user ("static version")

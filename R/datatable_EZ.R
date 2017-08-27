@@ -40,6 +40,9 @@
 #'   elements. See \url{https://datatables.net/reference/option/dom} for
 #'   details.
 #' @param columnDefs list of column definitions; see Examples.
+#' @param col_widths An numeric vector of column widths, in pixels. Must equal
+#'   the number of columns in the data. Ignored if \code{columnDefs} is
+#'   specified.
 #' @param order list of row sorting options; see examples.
 #' @param ordering logical; should the table be sortable?
 #' @param options a \code{list()} of all other options.
@@ -72,12 +75,32 @@ datatable_EZ <-
         searchHighlight = TRUE,
         dom="lftip",
         columnDefs = list(),
+        col_widths = NULL,
         ordering = TRUE,
         order = list(),
         options = list(),
         ...
     ){
-        # update options
+
+        # column widths
+        if(!is.null(col_widths)){
+            if(length(col_widths) != ncol(data))
+                stop("col_widths must be same length as the number of columns in the data.")
+
+            if(!is.numeric(col_widths))
+                stop("col_width must be a numeric vector of (pixels).")
+
+            if(length(columnDefs)==0){
+                # convert vector of pixels to a list of columnDefs options
+                columnDefs <- vec2columnDefs(col_widths)
+            } else {
+                message("col_widths ignored")
+            }
+
+        }
+
+
+        # update options list
         if(is.null(options$dom))                options <- c(options, list(dom=dom))
         if(is.null(options$columnDefs))         options <- c(options, list(columnDefs=columnDefs))
         if(is.null(options$pageLength))         options <- c(options, list(pageLength=pageLength))
@@ -239,3 +262,17 @@ get_range <-
         c(2*min(x, na.rm = T) - stats::quantile(x, min_quantile, na.rm = T),
           max(x, na.rm = T))
     }
+
+
+# function to convert a vector of column widths (in pixels) to columnDefs option
+#' @importFrom magrittr %>%
+vec2columnDefs <-
+    function(col_widths){
+        col_widths %>%
+            seq_along() %>%
+            purrr::map(
+                ~ list(width = paste0(as.integer(col_widths[.x]), "px"),
+                       targets = .x-1)
+            )
+    }
+

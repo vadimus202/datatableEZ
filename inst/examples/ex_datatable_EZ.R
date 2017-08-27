@@ -5,6 +5,7 @@ datatable(iris)
 # no rownumbers by default
 datatable_EZ(iris)
 
+# individual option arguments
 datatable_EZ(
     iris,
     # DOM elements (table only)
@@ -13,6 +14,12 @@ datatable_EZ(
     columnDefs = list(list(width = '50px', targets = c(1, 3))),
     # Row Sorting
     order = list(list(0, 'desc'), list(1, 'asc'))
+)
+
+# specify column widths in pixels
+datatable_EZ(
+    iris,
+    col_widths = c(50, 50, 300, 50, 300)
 )
 
 # disable sorting and searching by user ("static version")
