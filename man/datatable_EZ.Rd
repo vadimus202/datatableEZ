@@ -5,9 +5,10 @@
 \title{A friendly version of \code{DT::datatable()}}
 \usage{
 datatable_EZ(data, colnames, filter = "none", caption = NULL,
-  rownames = FALSE, class = "compact display", pageLength = 10,
-  lengthMenu = c(5, 10, 25, 50, 100, 500), searchHighlight = TRUE,
-  dom = "lftip", columnDefs = list(), col_widths = NULL,
+  rownames = FALSE, class = "compact display", dom = "lftip",
+  font_family = "Arial", font_size = 10, font_size_header = font_size + 2,
+  pageLength = 10, lengthMenu = c(5, 10, 25, 50, 100, 500),
+  searchHighlight = TRUE, columnDefs = list(), col_widths = NULL,
   ordering = TRUE, order = list(), options = list(), ...)
 }
 \arguments{
@@ -40,6 +41,16 @@ or a character vector of row names; by default, the row names are not shown}
 \item{class}{the CSS class(es) of the table, defaults to \code{"compact
 display"}; see \url{http://datatables.net/manual/styling/classes}}
 
+\item{dom}{By default, the table has these DOM elements: the length-(l) menu,
+the filtering-(f) input box, the table-(t), the information-(i) summary,
+and the pagination-(p) control. You can choose to display a subset of these
+elements. See \url{https://datatables.net/reference/option/dom} for
+details.}
+
+\item{font_family, font_size, font_size_header}{control how the table's fonts
+are rendered in the browser. The default font family is `Arial` 12 `pt` data
+cells and 14 `pt` for headers.}
+
 \item{pageLength}{a number of records to be displayed per page when the table
 loads}
 
@@ -47,12 +58,6 @@ loads}
 
 \item{searchHighlight}{a logical; should search expression be highlighted?
 Defaults to \code{TRUE}}
-
-\item{dom}{By default, the table has these DOM elements: the length-(l) menu,
-the filtering-(f) input box, the table-(t), the information-(i) summary,
-and the pagination-(p) control. You can choose to display a subset of these
-elements. See \url{https://datatables.net/reference/option/dom} for
-details.}
 
 \item{columnDefs}{list of column definitions; see Examples.}
 

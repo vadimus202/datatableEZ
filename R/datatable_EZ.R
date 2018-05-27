@@ -29,16 +29,19 @@
 #'   form styles or plain text input styles for the text input boxes
 #' @param class the CSS class(es) of the table, defaults to \code{"compact
 #'   display"}; see \url{http://datatables.net/manual/styling/classes}
-#' @param pageLength a number of records to be displayed per page when the table
-#'   loads
-#' @param lengthMenu a numeric vector of page length drop-down options
-#' @param searchHighlight a logical; should search expression be highlighted?
-#'   Defaults to \code{TRUE}
 #' @param dom By default, the table has these DOM elements: the length-(l) menu,
 #'   the filtering-(f) input box, the table-(t), the information-(i) summary,
 #'   and the pagination-(p) control. You can choose to display a subset of these
 #'   elements. See \url{https://datatables.net/reference/option/dom} for
 #'   details.
+#' @param font_family,font_size,font_size_header control how the table's fonts
+#'   are rendered in the browser. The default font family is `Arial` 12 `pt` data
+#'   cells and 14 `pt` for headers.
+#' @param pageLength a number of records to be displayed per page when the table
+#'   loads
+#' @param lengthMenu a numeric vector of page length drop-down options
+#' @param searchHighlight a logical; should search expression be highlighted?
+#'   Defaults to \code{TRUE}
 #' @param columnDefs list of column definitions; see Examples.
 #' @param col_widths An numeric vector of column widths, in pixels. Must equal
 #'   the number of columns in the data. Ignored if \code{columnDefs} is
@@ -70,10 +73,13 @@ datatable_EZ <-
         class = "compact display",
 
         # DT options
+        dom="lftip",
+        font_family = "Arial",
+        font_size = 10,
+        font_size_header = font_size + 2,
         pageLength = 10,
         lengthMenu = c(5, 10, 25, 50, 100, 500),
         searchHighlight = TRUE,
-        dom="lftip",
         columnDefs = list(),
         col_widths = NULL,
         ordering = TRUE,
@@ -111,6 +117,14 @@ datatable_EZ <-
             options <- c(options, list(order=order))
         if(is.null(options$ordering) & length(order)==0)
             options <- c(options, list(ordering=ordering))
+
+        # table font
+        if(is.null(options$initComplete ))
+            options <- c(options, list(initComplete = js_css(
+                font_family = font_family,
+                font_size = font_size,
+                font_size_header = font_size_header
+            )))
 
         # attach DT package
         if(!is_attached("DT")) attachNamespace("DT")
@@ -274,5 +288,25 @@ vec2columnDefs <-
                 ~ list(width = paste0(as.integer(col_widths[.x]), "px"),
                        targets = .x-1)
             )
+    }
+
+
+#' @keywords internal
+js_css <-
+    function(
+        font_family,
+        font_size,
+        font_size_header
+    ){
+        DT::JS(
+            "function(settings, json) {",
+            "$('body').css({'font-family': '%s'});" %>%
+                sprintf(font_family),
+            "$('td').css({'font-size': '%ipt'});" %>%
+                sprintf(font_size),
+            "$('th').css({'font-size': '%ipt'});" %>%
+                sprintf(font_size_header),
+            "}"
+        )
     }
 

@@ -60,6 +60,14 @@ datatable_EZ(
 )
 ```
 
+### Font Control
+
+the DT package doesn't set the default font family. So the browser will use its default font to display the datatable. That's why you find the font displays differently in different browsers.
+
+``` r
+datatable_EZ(iris, font_family = "Courier New", font_size = 9)
+```
+
 ### Specify Column Widths in Pixels
 
 ``` r
